@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Success!</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background: linear-gradient(135deg, #7F7FD5, #5A6FF5, #3C98F0);
+            font-family: 'Roboto', sans-serif;
+            color: #fff;
+            overflow: hidden;
+            perspective: 1200px;
+        }
+
+        .container {
+            text-align: center;
+            animation: fadeIn 1.5s ease-in-out;
+            max-width: 90%;
+            padding: 40px;
+            border-radius: 20px;
+            transform: translateZ(60px) rotateY(8deg);
+        }
+
+        h1 {
+            font-size: 3em;
+            margin-top: 20px;
+            letter-spacing: 0.1em;
+            text-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+            animation: textPopUp 1.5s 1.8s ease forwards;
+            opacity: 0;
+        }
+
+        .checkmark-container {
+            width: 150px;
+            height: 150px;
+            background: linear-gradient(135deg, #7F7FD5, #5A6FF5, #3C98F0);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto 30px auto;
+            position: relative;
+            animation: rotateIn 1s ease, bounce 0.5s 1s ease, pulse 1.2s 2s ease-in-out infinite;
+            transform-style: preserve-3d;
+        }
+
+        .checkmark-container::before {
+            content: '';
+            position: absolute;
+            top: -12px;
+            right: -12px;
+            bottom: -12px;
+            left: -12px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.4);
+            animation: glow 2s ease-in-out infinite;
+        }
+
+        .checkmark {
+            width: 90px;
+            height: 90px;
+            fill: none;
+            stroke: #fff;
+            stroke-width: 5;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            stroke-dasharray: 100;
+            stroke-dashoffset: 100;
+            animation: drawCheck 0.7s 1s ease forwards;
+        }
+
+        .back-button {
+            margin-top: 20px;
+            padding: 12px 24px;
+            font-size: 1.2em;
+            background: linear-gradient(135deg, #7F7FD5, #5A6FF5, #3C98F0);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .back-button:hover {
+            background: linear-gradient(135deg, #5A6FF5, #7F7FD5);
+        }
+
+        .neon-lines {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .neon-lines::before,
+        .neon-lines::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, rgba(0, 255, 255, 0) 0%, #00FFFF 50%, rgba(0, 255, 255, 0) 100%);
+            top: 0;
+            left: 0;
+            box-shadow: 0 0 20px #00FFFF;
+            animation: slide 3s linear infinite;
+        }
+
+        .neon-lines::after {
+            top: auto;
+            bottom: 0;
+        }
+
+        @keyframes slide {
+            from {
+                transform: translateX(-100%);
+            }
+            to {
+                transform: translateX(100%);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes rotateIn {
+            0% {
+                transform: rotate(-180deg) scale(0);
+            }
+            100% {
+                transform: rotate(0deg) scale(1);
+            }
+        }
+
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-15px);
+            }
+        }
+
+        @keyframes drawCheck {
+            100% {
+                stroke-dashoffset: 0;
+            }
+        }
+
+        @keyframes glow {
+            0%, 100% {
+                box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.4);
+            }
+            50% {
+                box-shadow: inset 0 0 30px rgba(255, 255, 255, 0.5);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.1);
+            }
+        }
+
+        @keyframes textPopUp {
+            0% {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="neon-lines"></div>
+    
+    <div class="container">
+        <div class="checkmark-container">
+            <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+        </div>
+        <h1>That's how it's done!</h1>
+        <button class="back-button" onclick="window.location.href='page2.html'">Back to the Library</button>
+    </div>
+</body>
+</html>

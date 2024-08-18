@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nothing Extraordinary</title>
+    <style type="text/css">
+        body {
+            margin: 0;
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #7F7FD5, #5A6FF5, #3C98F0);
+            color: #333;
+        }
+
+        .container {
+            background-color: #ffffff;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            max-width: 700px;
+            margin: 50px auto;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .button {
+            padding: 8px 16px; /* Smaller padding for smaller buttons */
+            font-size: 1em; /* Smaller font size */
+            background: linear-gradient(135deg, #7F7FD5, #5A6FF5, #3C98F0);
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .button:hover {
+            background: linear-gradient(135deg, #5A6FF5, #3C98F0, #7F7FD5);
+        }
+
+        .text-content {
+            margin-bottom: 50px; /* Adjust margin as needed to create space between the text and buttons */
+            line-height: 1.6;
+            font-size: 16px;
+            word-wrap: break-word; /* Ensure long words wrap within the container */
+            overflow-wrap: break-word; /* Ensure long words wrap within the container */
+        }
+
+        .author-line {
+            font-style: italic;
+            margin-bottom: 10px;
+        }
+
+        .second-author-line {
+            font-style: italic;
+            margin-bottom: 10px;
+        }
+
+        hr {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="buttons">
+            <button class="button" onclick="window.location.href='Page2.html'">Back</button>
+            <button class="button" id="copyButton" onclick="copyText()">Copy All</button>
+        </div>
+
+        <h1>Nothing Extraordinary</h1>
+
+        <div class="second-author-line">By Jennifer Kim</div>
+
+        <hr> <!-- Line moved below the second "By Jennifer Kim" -->
+
+        <div class="text-content" id="textContent">
+            <p>It was a Saturday. Whether it was sunny or cloudy, hot or cold, I cannot remember, but I do remember it was a Saturday because the mall was packed with people.</p>
+            <p>I was with my mom.</p>
+            <p>Mom is short. Skinny. It is easy to overlook her in a crowd simply because she is nothing extraordinary to see.</p>
+            <p>On that day we strolled down the slippery-slick tiles with soft, inconspicuous steps, peeking at window boutiques in fleeting glances because we both knew we wouldn’t be buying much, like always.</p>
+            <p>I remember I was looking up at the people we passed as we walked—at first apathetically, but then more attentively.</p>
+            <p>Ladies wore five-inch heels that clicked importantly on the floor and bright, elaborate clothing. Men strode by smelling of sharp cologne, faces clear of wrinkles—wiped away with expensive creams.</p>
+            <p>An uneasy feeling started to settle in my chest. I tried to push it out, but once it took root it refused to be yanked up and tossed away. It got more unbearable with every second until I could deny it no longer; I was ashamed of my mother.</p>
+            <p>We were in a high-class neighborhood, I knew that. We lived in a small, overpriced apartment building that hung on to the edge of our county that Mom chose to move to because she knew the schools were good.</p>
+            <p>We were in a high-class neighborhood, but as I scrutinized the passers-by and then turned accusing eyes on Mom, I realized for the first time that we didn’t belong there.</p>
+            <p>I could see the heavy lines around Mom’s eyes and mouth, etched deep into her skin without luxurious lotions to ease them away. She wore cheap, ragged clothes with the seams torn, shoes with the soles worn down. Her eyes were tired from working long hours to make ends meet and her hair too gray for her age.</p>
+            <p>I looked at her, and I was ashamed.</p>
+            <p>My mom is nothing extraordinary, yet at that moment she stood out because she was just so plain.</p>
+            <p>Mumbling I’d meet her at the clothes outlet around the corner, I hurried away to the bathroom. I didn’t want to be seen with her, although there was no one important around to see me anyway.</p>
+            <p>When I finally made my way to the outlet with grudging steps, I found that Mom wasn’t there.</p>
+            <p>With no other options, I had to scour the other stores in the area for her. I was dreading returning to her side, already feeling the secondhand embarrassment that I’d recently discovered came with being with her.</p>
+            <p>I couldn’t have been more wrong. Mom was standing in the middle of a high-end store, holding a sweater that looked much too expensive.</p>
+            <p>She said, “This will look good on you. Do you want it?”</p>
+            <p>It was much too expensive. And I almost agreed, carelessly, thoughtlessly.</p>
+            <p>Then I took a closer look at the small, weary woman with a big smile stretching across her narrow face and a sweater in her hands, happy to be giving me something so nice, and my words died in my throat.</p>
+            <p>I felt like I’d been dropped into a cold lake.</p>
+            <p>Her clothes were tattered and old because she spent her money buying me new ones. She looked so tired and ragged all the time because she was busy working to provide for me. She didn’t wear jewelry or scented perfumes because she was just content with me.</p>
+            <p>Suddenly, Mother was beautiful and extraordinarily wonderful in my eyes.</p>
+            <p>I was no longer ashamed of her, but of myself.</p>
+            <p>“Do you want it?” My mom repeated.</p>
+            <p>“No thanks.”</p>
+        </div>
+    </div>
+
+    <script>
+        function copyText() {
+            const text = document.getElementById('textContent').innerText;
+            const textarea = document.createElement('textarea');
+            textarea.value = text;
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textarea);
+
+            // Change button text to "Copied!"
+            const copyButton = document.getElementById('copyButton');
+            copyButton.textContent = "Copied!";
+
+            // Revert the button text back to "Copy All" after 3 seconds
+            setTimeout(() => {
+                copyButton.textContent = "Copy All";
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
