@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transform My Writing</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap');
+
+        body {
+            display: flex;
+            margin: 0;
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #7F7FD5, #5A6FF5, #3C98F0);
+            color: #333;
+            height: 100vh;
+        }
+
+        .container {
+            text-align: center;
+            background-color: #ffffff;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            max-width: 700px;
+            width: 90%;
+            margin: auto;
+            height: calc(100vh - 40px); /* Adjust to use full screen height */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        #sentenceDisplay {
+            font-size: 2.5em;
+            margin-bottom: 30px;
+            color: #333;
+            letter-spacing: 1px;
+            line-height: 1.2em;
+        }
+
+        #correctText {
+            background: linear-gradient(135deg, #7F7FD5, #5A6FF5, #3C98F0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        #currentText {
+            position: relative;
+            color: #000;
+        }
+
+        #currentText.error {
+            color: #f44336; /* Red color for incorrect typing */
+        }
+
+        #currentText::before {
+            content: "";
+            display: inline-block;
+            width: 2px;
+            height: 1.2em;
+            background-color: #000;
+            position: absolute;
+            bottom: 0;
+            right: 100%; /* Position the blinking line before the letter */
+            animation: blink 1s step-end infinite;
+        }
+
+        @keyframes blink {
+            from, to {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0;
+            }
+        }
+
+        #remainingText {
+            color: #333;
+        }
+
+        .error {
+            color: #f44336;
+        }
+
+        #typingBox {
+            width: 100%;
+            max-width: 600px;
+            padding: 15px;
+            font-size: 1.5em;
+            border: 2px solid #333;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            outline: none;
+            opacity: 0; /* Hide the input box */
+            position: absolute; /* Position it off-screen */
+        }
+
+        #keyboard {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        .key-row {
+            display: flex;
+            margin-bottom: 5px;
+        }
+
+        .key {
+            width: 60px;
+            height: 60px;
+            margin: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid #333;
+            border-radius: 10px;
+            background-color: #f9f9f9;
+            font-weight: bold;
+            font-size: 1.2em;
+            transition: background-color 0.1s, transform 0.1s;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .key.active {
+            background: linear-gradient(135deg, #7F7FD5, #5A6FF5, #3C98F0);
+            color: #fff;
+            transform: translateY(-2px);
+        }
+
+        .key.error {
+            background-color: #f44336; /* Red highlight for error */
+            color: #fff;
+            transform: translateY(-2px);
+        }
+
+        .key.space {
+            width: 300px;
+        }
+
+        .key.shift, .key.enter {
+            width: 100px;
+        }
+
+        .key.tab, .key.caps {
+            width: 80px;
+        }
+
+        .key.backspace {
+            width: 150px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div id="sentenceDisplay">
+            <span id="correctText"></span><span id="currentText"></span><span id="remainingText"></span>
+        </div>
+        <input type="text" id="typingBox" placeholder="Start typing..." autocomplete="off">
+        <div id="keyboard"></div>
+    </div>
+
+    <script>
+        const targetSentence = "Little did I know, two simple words would transform my writing forever: Open Sesame";
+        const shortcutPhrase = "Open Sesame";
+        const correctText = document.getElementById('correctText');
+        const currentText = document.getElementById('currentText');
+        const remainingText = document.getElementById('remainingText');
+        const typingBox = document.getElementById('typingBox');
+        const keyboard = document.getElementById('keyboard');
+        let isTypingOpenSesame = false;
+
+        remainingText.textContent = targetSentence;
+        typingBox.focus(); // Auto-focus on the typing input
+
+        // Listen for keypresses even when the input box is not directly clicked
+        document.addEventListener('keydown', (event) => {
+            if ((event.key === "Backspace" || event.key === "Delete") && !isTypingOpenSesame) {
+                handleDelete();
+            } else {
+                handleTyping(event.key);
+                typingBox.value = ''; // Prevents the key from showing in the input box
+            }
+        });
+
+        function handleTyping(key) {
+            const typedValue = correctText.textContent + key;
+            const correctPortion = targetSentence.slice(0, typedValue.length);
+            const shortcutCorrectPortion = shortcutPhrase.slice(0, typedValue.length);
+
+            if (typedValue === correctPortion || typedValue === shortcutCorrectPortion) {
+                if (typedValue === shortcutCorrectPortion) {
+                    setText(shortcutCorrectPortion, shortcutPhrase, shortcutPhrase.charAt(typedValue.length), shortcutPhrase.slice(typedValue.length + 1));
+                    isTypingOpenSesame = true; // Once "Open Sesame" starts being typed, disallow deletion
+                } else {
+                    setText(correctPortion, targetSentence, targetSentence.charAt(typedValue.length), targetSentence.slice(typedValue.length + 1));
+                }
+
+                if (typedValue === targetSentence || typedValue === shortcutPhrase) {
+                    window.location.href = "page2.html"; // Redirect to Page2 when the full sentence or shortcut is typed
+                }
+            } else {
+                setError();
+            }
+        }
+
+        function handleDelete() {
+            const typedValue = correctText.textContent;
+            if (typedValue.length > 0) {
+                const newTypedValue = typedValue.slice(0, -1);
+                const correctPortion = targetSentence.slice(0, newTypedValue.length);
+                const remainingPortion = targetSentence.slice(newTypedValue.length);
+                
+                correctText.textContent = newTypedValue;
+                currentText.textContent = remainingPortion.charAt(0);
+                remainingText.textContent = remainingPortion.slice(1);
+            }
+        }
+
+        function setText(correctPortion, fullText, currentChar, remaining) {
+            correctText.textContent = correctPortion;
+            currentText.textContent = currentChar;
+            currentText.classList.remove('error');
+            remainingText.textContent = remaining;
+            typingBox.classList.remove('error');
+        }
+
+        function setError() {
+            currentText.classList.add('error');
+            typingBox.classList.add('error');
+        }
+
+        // Create a visual keyboard resembling a real one
+        const rows = [
+            ['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P'],
+            ['A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L'],
+            ['Z', 'X', 'C', 'V', 'B', 'N', 'M'],
+            ['Shift', 'Space', 'Enter']
+        ];
+
+        rows.forEach((row) => {
+            const rowElement = document.createElement('div');
+            rowElement.classList.add('key-row');
+
+            row.forEach(key => {
+                const keyElement = document.createElement('div');
+                keyElement.classList.add('key');
+                keyElement.textContent = key;
+                keyElement.setAttribute('data-key', key.toUpperCase());
+
+                // Add special classes for styling
+                if (key === 'Space') {
+                    keyElement.classList.add('space');
+                    keyElement.setAttribute('data-key', ' ');
+                } else if (key === 'Shift' || key === 'Enter') {
+                    keyElement.classList.add(key.toLowerCase());
+                }
+
+                rowElement.appendChild(keyElement);
+            });
+
+            keyboard.appendChild(rowElement);
+        });
+
+        // Listen for keypresses and highlight the corresponding key
+        typingBox.addEventListener('keydown', (event) => {
+            const key = event.key.toUpperCase();
+            const keyElement = document.querySelector(`.key[data-key='${key}']`);
+            if (keyElement) {
+                if (event.key === targetSentence.charAt(correctText.textContent.length) || event.key === shortcutPhrase.charAt(correctText.textContent.length)) {
+                    keyElement.classList.add('active');
+                } else {
+                    keyElement.classList.add('error');
+                }
+            }
+        });
+
+        typingBox.addEventListener('keyup', (event) => {
+            const key = event.key.toUpperCase();
+            const keyElement = document.querySelector(`.key[data-key='${key}']`);
+            if (keyElement) {
+                keyElement.classList.remove('active', 'error');
+            }
+        });
+    </script>
+</body>
+</html>
