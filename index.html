@@ -14,19 +14,31 @@
             text-align: center;
         }
 
-        .video-container {
-            width: 100%;
-            max-width: 400px; /* Set a smaller max width for the video */
-            margin: 0 auto; /* Center the video */
-            overflow: hidden;
-            margin-bottom: 0px; /* Remove space below the video */
+        .typing-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 150px; /* Reduced height for less white space */
+            margin: 0; /* Remove any default margin */
         }
 
-        video {
-            width: 100%;
-            height: auto;
-            object-fit: cover;
-            margin-bottom: -10px; /* Move video closer to the text */
+        #overlay-text {
+            font-size: 4em; /* Increase the font size */
+            font-weight: bold;
+            color: #333; /* Dark grey text color */
+            position: relative;
+        }
+
+        #overlay-text .highlight {
+            position: absolute;
+            top: 0;
+            left: 0;
+            color: transparent;
+            background: linear-gradient(135deg, #6a11cb, #2575fc);
+            -webkit-background-clip: text;
+            background-clip: text;
+            white-space: nowrap;
+            overflow: hidden;
         }
 
         .nav-menu {
@@ -202,11 +214,11 @@
     </style>
 </head>
 <body>
-    <div class="video-container">
-        <video autoplay loop muted>
-            <source src="logo.mp4" type="video/mp4">
-            Your browser does not support the video tag.
-        </video>
+    <div class="typing-container">
+        <span id="overlay-text">
+            Copy Work It.
+            <span class="highlight"></span>
+        </span>
     </div>
 
     <div class="nav-menu">
@@ -263,5 +275,36 @@
             <button class="button" id="libraryButton" onclick="window.location.href='opensesame.html'">Take Me to the Library</button>
         </div>
     </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const textElement = document.querySelector('#overlay-text .highlight');
+    
+            const text = 'Copy Work It.'; // Correct text
+            let index = 0;
+            const typingSpeed = 200; // Adjust typing speed here
+    
+            function type() {
+                if (index < text.length) {
+                    textElement.textContent = text.substring(0, index + 1);
+                    index++;
+                    setTimeout(type, typingSpeed);
+                } else {
+                    setTimeout(erase, typingSpeed);
+                }
+            }
+    
+            function erase() {
+                if (index >= 0) {
+                    textElement.textContent = text.substring(0, index);
+                    index--;
+                    setTimeout(erase, typingSpeed);
+                } else {
+                    setTimeout(type, typingSpeed);
+                }
+            }
+    
+            type();
+        });
+    </script>    
 </body>
 </html>
